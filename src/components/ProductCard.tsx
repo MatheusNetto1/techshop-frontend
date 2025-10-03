@@ -23,19 +23,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="border p-4 rounded-xl shadow-md hover:shadow-2xl hover:-translate-y-1 transform transition duration-300 bg-white">
+    <div className="border border-gray-200 p-4 rounded-xl shadow-md hover:shadow-2xl hover:-translate-y-1 transform transition duration-300 bg-[var(--color-card-bg)]">
       <Link to={`/products/${product.id}`}>
         <img
           src={product.imageUrl}
           alt={product.name}
           className="w-full h-48 object-cover mb-4 rounded-md transition-transform duration-300 hover:scale-105"
         />
-        <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-        <p className="text-gray-600 font-medium">${product.price.toFixed(2)}</p>
+        <h2 className="text-lg font-semibold text-[var(--color-text)]">{product.name}</h2>
+        <p className="text-[var(--color-subtle)] font-medium">${product.price.toFixed(2)}</p>
       </Link>
       <button
         onClick={handleAddToCart}
-        className="mt-4 w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-lg hover:opacity-90 transition"
+        className="mt-4 w-full bg-[var(--color-primary)] text-white py-2 rounded-lg hover:bg-[var(--color-secondary)] transition"
       >
         Adicionar ao Carrinho
       </button>
@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </button>
             <Link
               to="/cart"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
+              className="bg-[var(--color-primary)] text-white py-2 px-4 rounded-md hover:bg-[var(--color-secondary)] transition"
             >
               Ir para o Carrinho
             </Link>

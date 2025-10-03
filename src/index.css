@@ -1,3 +1,26 @@
 /* src/index.css */
 
 @import "tailwindcss";
+
+/* Seção para cores personalizadas, usando a diretiva do Tailwind CSS */
+@layer base {
+  :root {
+    --color-primary: #3B82F6;
+    --color-secondary: #1D4ED8;
+    --color-accent: #EF4444;
+    --color-text: #1F2937;
+    --color-subtle: #6B7280;
+    --color-gray-bg: #F3F4F6;
+    --color-card-bg: #FFFFFF;
+  }
+}
+
+/* Importação de uma fonte externa do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Estilos globais para a aplicação */
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
