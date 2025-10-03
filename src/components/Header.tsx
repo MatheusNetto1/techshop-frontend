@@ -1,50 +1,51 @@
 // src/components/Header.tsx
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext'; // Importe o hook de autenticação
+import { useAuth } from '../context/AuthContext';
+import { FaShoppingCart } from 'react-icons/fa'; // Importe o ícone do carrinho
 
 const Header: React.FC = () => {
   const { cart } = useCart();
-  const { isLoggedIn, logout } = useAuth(); // Use o estado e a função de logout
+  const { isLoggedIn, logout } = useAuth();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold">
+    <header className="bg-gray-900 text-white fixed w-full z-50 shadow-md">
+      <div className="container mx-auto flex justify-between items-center py-4 px-6">
+        <Link
+          to="/"
+          className="text-2xl font-bold tracking-wide text-blue-400 hover:text-blue-300 transition"
+        >
           TechShop
         </Link>
-        <nav>
-          <ul className="flex space-x-4 items-center">
-            <li>
-              <Link to="/" className="hover:text-gray-300 transition-colors">
-                Produtos
-              </Link>
-            </li>
-            <li>
-              <Link to="/cart" className="hover:text-gray-300 transition-colors relative">
-                Carrinho ({totalItems})
-              </Link>
-            </li>
-            {isLoggedIn ? (
-              <li>
-                <button
-                  onClick={logout}
-                  className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition-colors"
-                >
-                  Sair
-                </button>
-              </li>
-            ) : (
-              <li>
-                <Link to="/login" className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition-colors">
-                  Login
-                </Link>
-              </li>
+        <nav className="flex items-center gap-6">
+          <Link to="/" className="hover:text-blue-400 transition-colors">
+            Produtos
+          </Link>
+          <Link to="/cart" className="relative hover:text-blue-400 transition-colors">
+            <FaShoppingCart className="text-xl" /> {/* Use o ícone do carrinho */}
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-3 bg-red-500 text-xs text-white px-2 py-0.5 rounded-full shadow">
+                {totalItems}
+              </span>
             )}
-          </ul>
+          </Link>
+          {isLoggedIn ? (
+            <button
+              onClick={logout}
+              className="bg-gradient-to-r from-red-500 to-red-600 px-4 py-2 rounded-lg hover:opacity-90 transition font-medium shadow"
+            >
+              Sair
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg hover:opacity-90 transition font-medium shadow"
+            >
+              Login
+            </Link>
+          )}
         </nav>
       </div>
     </header>
