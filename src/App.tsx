@@ -2,11 +2,12 @@
 
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Footer from './components/Footer'; // Importe o componente Footer
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmationPage from './pages/OrderConfirmationPage'; // Importe a nova página
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/products/:productId" element={<ProductDetailPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
         </Routes>
       </main>
       <Footer />

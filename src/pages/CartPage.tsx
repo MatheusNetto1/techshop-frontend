@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 
 const CartPage: React.FC = () => {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, incrementQuantity, decrementQuantity } = useCart();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -22,15 +22,32 @@ const CartPage: React.FC = () => {
                 <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded mr-4" />
                 <div>
                   <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p className="text-gray-600">${item.price.toFixed(2)} x {item.quantity}</p>
+                  <p className="text-gray-600">${item.price.toFixed(2)}</p>
+                  
+                  {/* Controles de quantidade */}
+                  <div className="flex items-center mt-2">
+                    <button
+                      onClick={() => decrementQuantity(item.id)}
+                      className="bg-gray-300 px-2 py-1 rounded-l-md hover:bg-gray-400 transition-colors"
+                    >
+                      -
+                    </button>
+                    <span className="px-4 py-1 border-t border-b">{item.quantity}</span>
+                    <button
+                      onClick={() => incrementQuantity(item.id)}
+                      className="bg-gray-300 px-2 py-1 rounded-r-md hover:bg-gray-400 transition-colors"
+                    >
+                      +
+                    </button>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="ml-4 text-red-500 hover:text-red-700 transition-colors"
+                    >
+                      Remover
+                    </button>
+                  </div>
                 </div>
               </div>
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition-colors"
-              >
-                Remover
-              </button>
             </div>
           ))}
           <div className="mt-8 flex justify-between items-center text-2xl font-bold">
