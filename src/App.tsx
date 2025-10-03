@@ -7,7 +7,8 @@ import HomePage from './pages/HomePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
-import OrderConfirmationPage from './pages/OrderConfirmationPage'; // Importe a nova página
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
       <Footer />

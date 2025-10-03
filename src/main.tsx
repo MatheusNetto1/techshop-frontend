@@ -6,13 +6,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <CartProvider> {/* Envolva o App com o provedor */}
-        <App />
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );
