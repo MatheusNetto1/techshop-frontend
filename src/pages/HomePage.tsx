@@ -1,13 +1,31 @@
 // src/pages/HomePage.tsx
-import React, { useState } from 'react';
-import { products } from '../data';
-import ProductCard from '../components/ProductCard';
-import { Search } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import ProductCard from "../components/ProductCard";
+import { Search } from "lucide-react";
+import type { Product } from "../types/product";
+import { getProducts } from "../services/product";
 
 const HomePage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const productsPerPage = 8;
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (err) {
+        console.error("Erro ao buscar produtos:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -15,7 +33,10 @@ const HomePage: React.FC = () => {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
@@ -33,8 +54,8 @@ const HomePage: React.FC = () => {
         className={`px-4 py-2 mx-1 rounded-lg transition-all duration-200 text-sm font-medium
           ${
             currentPage === number
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+              ? "bg-blue-600 text-white shadow-md"
+              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
           }`}
       >
         {number}
@@ -67,49 +88,59 @@ const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {filteredProducts.length > 0 && (
-          <p className="text-sm text-gray-600 mb-6">
-            Mostrando {indexOfFirstProduct + 1}-
-            {Math.min(indexOfLastProduct, filteredProducts.length)} de {filteredProducts.length}{' '}
-            produtos
-          </p>
-        )}
+        {loading ? (
+          <p className="text-center text-gray-600">Carregando produtos...</p>
+        ) : (
+          <>
+            {filteredProducts.length > 0 && (
+              <p className="text-sm text-gray-600 mb-6">
+                Mostrando {indexOfFirstProduct + 1}-
+                {Math.min(indexOfLastProduct, filteredProducts.length)} de{" "}
+                {filteredProducts.length} produtos
+              </p>
+            )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-          {currentProducts.length > 0 ? (
-            currentProducts.map((product) => <ProductCard key={product.id} product={product} />)
-          ) : (
-            <div className="col-span-full text-center py-12">
-              <p className="text-lg text-gray-500">Nenhum produto encontrado.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+              {currentProducts.length > 0 ? (
+                currentProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-lg text-gray-500">
+                    Nenhum produto encontrado.
+                  </p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2">
-            <button
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-6 py-2 rounded-lg border border-gray-300 bg-white text-gray-700
-                         font-medium disabled:opacity-50 disabled:cursor-not-allowed
-                         hover:bg-gray-50 transition-all duration-200"
-            >
-              Anterior
-            </button>
-            <div className="hidden sm:flex">{renderPageNumbers()}</div>
-            <div className="sm:hidden px-4 py-2 text-sm text-gray-600">
-              Página {currentPage} de {totalPages}
-            </div>
-            <button
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-6 py-2 rounded-lg border border-gray-300 bg-white text-gray-700
-                         font-medium disabled:opacity-50 disabled:cursor-not-allowed
-                         hover:bg-gray-50 transition-all duration-200"
-            >
-              Próxima
-            </button>
-          </div>
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2">
+                <button
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-6 py-2 rounded-lg border border-gray-300 bg-white text-gray-700
+                             font-medium disabled:opacity-50 disabled:cursor-not-allowed
+                             hover:bg-gray-50 transition-all duration-200"
+                >
+                  Anterior
+                </button>
+                <div className="hidden sm:flex">{renderPageNumbers()}</div>
+                <div className="sm:hidden px-4 py-2 text-sm text-gray-600">
+                  Página {currentPage} de {totalPages}
+                </div>
+                <button
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-6 py-2 rounded-lg border border-gray-300 bg-white text-gray-700
+                             font-medium disabled:opacity-50 disabled:cursor-not-allowed
+                             hover:bg-gray-50 transition-all duration-200"
+                >
+                  Próxima
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
